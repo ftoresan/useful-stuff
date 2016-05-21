@@ -6,7 +6,7 @@ def copyFiles():
 		print('Usage: python3 random_mp3 <source_dir> <dest_dir> [limit (Mb)]\n')
 		sys.exit(0)															
 	source = sys.argv[1]
-	source += '/*/*.mp3'
+	source += '**/*.mp3'
 	dest = sys.argv[2]
 	limit = sys.argv[3]
 	limit = int(limit)
