@@ -1,7 +1,12 @@
 import sys, os, random, glob, shutil, argparse
 
-def copyFiles():
+def toMb(sizeInBytes):
+	return sizeInBytes / 1024 / 1024
 
+def toBytes(sizeInMb):
+	return sizeInMb * 1024 * 1024
+
+def copyFiles():
 	parser = argparse.ArgumentParser(description='Copy random mp3s files')
 	parser.add_argument('source', metavar='source', help='Folder where the mp3 files must be copied from')
 	parser.add_argument('dest', metavar='dest', help='Destination folder where the mp3 files must be copied to')
@@ -12,8 +17,7 @@ def copyFiles():
 	source = args.source
 	source += '**/*.mp3'
 	dest = args.dest
-	limit = args.limit
-	limit *= 1024 * 1024
+	limit = toBytes(args.limit)
 	size = 0
 	allFiles = glob.glob(source, recursive=True)
 	random.shuffle(allFiles) # Extra shuffling
@@ -28,9 +32,9 @@ def copyFiles():
 			except:
  				print ('You have a song with a messy name!')
 		if args.verbose:
-			print("Copying " + chosen + "\n\t(" + str(int(size / 1024 / 1024)) + " Mb of " + str(limit / 1024 / 1024) + " Mb)")
+			print("Copying " + chosen + "\n\t(" + str(int(toMb(size))) + " Mb of " + str(toMb(limit)) + " Mb)")
 		else:
-			sys.stdout.write("Copying %d Mb of %d Mb \r" % ((size / 1024 / 1024), (limit / 1024 / 1024)) )
+			sys.stdout.write("Copying %d Mb of %d Mb \r" % ((toMb(size)), (toMb(limit))) )
 			sys.stdout.flush()
 		allFiles.remove(chosen)
 
